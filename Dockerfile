@@ -14,7 +14,7 @@ COPY package.json package-lock.json .
 COPY . .
 
 # Expose port 3000 (if your application listens on this port)
-EXPOSE 3000
+EXPOSE 3030
 
 # Set the command to run your application
 CMD ["npm", "start"]
