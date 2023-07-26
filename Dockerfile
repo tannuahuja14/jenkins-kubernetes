@@ -1,5 +1,5 @@
 # Use a valid Node.js version tag, e.g., 14-alpine3.16
-FROM node: 14-alpine3.16
+FROM node: 16-alpine3.16
 
 # Set the working directory inside the container
 WORKDIR /react-app
