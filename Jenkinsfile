@@ -52,5 +52,4 @@ git 'https://github.com/tannuahuja14/jenkins-kubernetes.git'
 // }
 
 // }
-
-// }
+}
