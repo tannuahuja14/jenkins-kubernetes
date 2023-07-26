@@ -1,14 +1,14 @@
 # Use a valid Node.js version tag, e.g., 14-alpine3.16
-FROM node: 16-alpine3.16
+FROM node:14-alpine3.16
 
 # Set the working directory inside the container
-WORKDIR /react-app
+WORKDIR /app
 
 # Copy package.json and package-lock.json to the container
 COPY package.json package-lock.json ./
 
 # Install Node.js dependencies
-RUN npm ci --only=production
+RUN npm ci
 
 # Copy all files from the current directory to the container's working directory
 COPY . .
