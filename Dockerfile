@@ -7,8 +7,8 @@ WORKDIR /app
 # Install Node.js dependencies
 RUN npm install
 
-# Copy package.json and package-lock.json to the container
-COPY package.json package-lock.json .
+# # Copy package.json and package-lock.json to the container
+# COPY package.json package-lock.json .
 
 # Copy all files from the current directory to the container's working directory
 COPY . .
