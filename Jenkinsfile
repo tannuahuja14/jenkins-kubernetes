@@ -1,7 +1,6 @@
 pipeline {
     environment {
         dockerImageName = "tannuahuja14/react-app"
-        dockerImage = ""
     }
 
     agent any
@@ -23,22 +22,18 @@ pipeline {
 
         stage('Pushing Image') {
             environment {
-                registryCredential = 'dockerhub'
+                registryCredential = credentials('dockerhub') // Use the ID of your Docker Hub credentials in Jenkins
             }
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        sh 'docker login -u tannuahuja14 -p ${dockerhub}'      
-                        dockerImage.push("latest")
-                        
-
-}
-            
+                        sh "docker login -u ${registryCredential.username} -p ${registryCredential.password}"
+                        sh "docker push $dockerImageName"
                     }
                 }
             }
         }
-*/
+        
         // stage('Deploying React.js container to Kubernetes') {
         //     steps {
         //         script {
@@ -46,6 +41,5 @@ pipeline {
         //         }
         //     }
         // }
-        /*
     }
 }
