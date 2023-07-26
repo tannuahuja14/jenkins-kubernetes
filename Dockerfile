@@ -4,11 +4,11 @@ FROM node:14-alpine3.16
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
-COPY package.json package-lock.json .
-
 # Install Node.js dependencies
 RUN npm install
+
+# Copy package.json and package-lock.json to the container
+COPY package.json package-lock.json .
 
 # Copy all files from the current directory to the container's working directory
 COPY . .
