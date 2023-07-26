@@ -20,19 +20,18 @@ pipeline {
             }
         }
 
-        stage('Pushing Image') {
-            environment {
-                registryCredential = credentials('dockerhub') // Use the ID of your Docker Hub credentials in Jenkins
-            }
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        sh "docker login -u ${registryCredential.username} -p ${registryCredential.password}"
-                        sh "docker push $dockerImageName"
-                    }
-                }
-            }
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhub-credentials'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
         }
+      }
+    }
         
         // stage('Deploying React.js container to Kubernetes') {
         //     steps {
