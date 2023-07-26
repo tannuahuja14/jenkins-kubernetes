@@ -1,55 +1,49 @@
 pipeline {
+    environment {
+        dockerImageName = "tannuahuja14/react-app"
+        dockerImage = ""
+    }
 
-environment {
-dockerimagename = "tannuahuja14/react-app"
-dockerImage = ""
-}
+    agent any
 
-agent any
+    stages {
+        stage('Checkout Source') {
+            steps {
+                git 'https://github.com/tannuahuja14/jenkins-kubernetes.git'
+            }
+        }
 
-stages {
-
-stage('Checkout Source') {
-steps {
-git 'https://github.com/tannuahuja14/jenkins-kubernetes.git'
-}
-}
-
-// stage('Build image') {
-// steps{
-// script {
-// dockerImage = docker.build dockerimagename
-// }
-// }
-// }
- stage('Build docker image'){
-            steps{
-                script{
-                    sh 'docker build -t tannuahuja14/react-app .'
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t $dockerImageName .'
                 }
             }
-        }  
+        }
 
-// stage('Pushing Image') {
-// environment {
-// registryCredential = 'dockerhub'
-// }
-// steps{
-// script {
-// docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-// dockerImage.push("latest")
-// }
-// }
-// }
-// }
+        /*
+        Uncomment the following stages if needed:
 
-// stage('Deploying React.js container to Kubernetes') {
-// steps {
-// script {
-// kubernetesDeploy(configs: "deployment.yaml", "service.yaml")
-// }
-// }
-// }
+        stage('Pushing Image') {
+            environment {
+                registryCredential = 'dockerhub'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
 
-// }
+        stage('Deploying React.js container to Kubernetes') {
+            steps {
+                script {
+                    kubernetesDeploy(configs: "deployment.yaml", "service.yaml")
+                }
+            }
+        }
+        */
+    }
 }
