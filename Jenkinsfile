@@ -16,35 +16,36 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build dockerimagename 
+                    dockerImage = docker.build dockerImageName // Fixed the variable name to dockerImageName
                 }
             }
         }
 
-    stage('Pushing Image') {
-      environment {
-               registryCredential = 'dockerhublogin'
-           }
-      steps{
-        script {
-          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-            dockerImage.push("latest")
-          }
+        stage('Pushing Image') {
+            environment {
+                registryCredential = 'dockerhublogin'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                        dockerImage.push("latest")
+                    }
+                }
+            }
         }
-      }
-    }
-        
+
         stage('Deploying React.js container to Kubernetes') {
             steps {
                 script {
-                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'kubernetes')
+                    kubernetesDeploy(configs: 'deploymentservice.yaml', kubeconfigId: 'kubernetes')
                 }
             }
-        }        stage('Deploy to Kubernetes') {
+        }
+
+        stage('Deploy to Kubernetes') {
             steps {
                 sh 'kubectl apply -f deploymentservice.yaml'
             }
         }
-        
     }
 }
