@@ -1,6 +1,7 @@
 pipeline {
     environment {
         dockerImageName = "tannuahuja14/react-app"
+        dockerImage = ""
     }
 
     agent any
@@ -15,14 +16,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t $dockerImageName .'
+                    dockerImage = docker.build dockerimagename 
                 }
             }
         }
 
     stage('Pushing Image') {
       environment {
-               registryCredential = 'dockerhub'
+               registryCredential = 'dockerhublogin'
            }
       steps{
         script {
