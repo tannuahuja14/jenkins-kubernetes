@@ -40,6 +40,11 @@ pipeline {
                     kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'kubernetes')
                 }
             }
+        }        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f deploymentservice.yaml'
+            }
         }
+        
     }
 }
