@@ -42,10 +42,10 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                sh 'kubectl apply -f deploymentservice.yaml'
-            }
-        }
+        // stage('Deploy to Kubernetes') {
+        //     steps {
+        //         sh 'kubectl apply -f deploymentservice.yaml'
+        //     }
+        // }
     }
 }
