@@ -34,7 +34,7 @@ pipeline {
             }
         }
 
-        stage('Deploying React.js container to Kubernetes') {
+        stage('Deploying the application to Kubernetes') {
             steps {
                 script {
                     kubernetesDeploy(configs: 'deploymentservice.yaml', kubeconfigId: 'kubernetes')
