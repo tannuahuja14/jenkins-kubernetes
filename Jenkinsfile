@@ -1,7 +1,8 @@
 pipeline {
     environment {
-        dockerImageName = "tannuahuja/react-app"
-        dockerImage = ""
+        dockerImageName = "tannuahuja14/react-app"
+        dockerImageTag = "v2.0" // Specify the desired tag for your Docker image
+        registryCredential = 'dockerhublogin'
     }
 
     agent any
@@ -16,36 +17,39 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build dockerImageName // Fixed the variable name to dockerImageName
+                    // Build the Docker image with the specified tag
+                    docker.build("${dockerImageName}:${dockerImageTag}")
                 }
             }
         }
 
-        stage('Pushing Image') {
-            environment {
-                registryCredential = 'dockerhublogin'
-            }
+        stage('Tag Docker Image') {
             steps {
                 script {
+                    // Tag the Docker image with the specified tag
+                    docker.image("${dockerImageName}:${dockerImageTag}").push()
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Push the Docker image to the registry
                     docker.withRegistry('https://index.docker.io/v1/', registryCredential) {
-                        dockerImage.push("latest")
+                        docker.image("${dockerImageName}:${dockerImageTag}").push()
                     }
                 }
             }
         }
 
-        stage('Deploying the application to Kubernetes') {
+        stage('Deploying to Kubernetes') {
             steps {
                 script {
+                    // Deploy the application to Kubernetes using the provided configuration file
                     kubernetesDeploy(configs: 'deploymentservice.yaml', kubeconfigId: 'kubernetes')
                 }
             }
         }
-
-        // stage('Deploy to Kubernetes') {
-        //     steps {
-        //         sh 'kubectl apply -f deploymentservice.yaml'
-        //     }
-        // }
     }
 }
