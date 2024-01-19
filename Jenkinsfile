@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     // Push the Docker image to the registry
-                    docker.withRegistry('https://index.docker.io/v1/', registryCredential) {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
                         docker.image("${dockerImageName}:${dockerImageTag}").push()
                     }
                 }
